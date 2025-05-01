@@ -5,13 +5,13 @@ export const releases: Release[] = [
     id: 'release-1',
     title: 'New Day',
     artist: 'Guyz At The Back',
-    artistId: 'GATB_Records',
-    coverArt: '../assets/audio/2025/1-NewDay/cover.jpg',
+    artistId: 'artist-1',
+    coverArt: '/assets/audio/2025/1-NewDay/cover.jpg',
     releaseDate: '2025-05-01',
     type: 'single',
     tracks: [
-      { id: 'track-1-1', title: 'New Day', duration: '3:42', previewUrl: '../assets/audio/2025/1-NewDay/audio.mp3' }
-      // { id: 'track-1-2', title: 'New Day', duration: '4:15' }
+      { id: 'track-1-1', title: 'New Day', duration: '0:27', previewUrl: '/assets/audio/2025/1-NewDay/audio.mp3' },
+      { id: 'track-1-2', title: 'New Day', duration: '0:27' }
     ],
     links: {
       spotify: 'https://open.spotify.com',

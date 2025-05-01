@@ -2,17 +2,24 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const MusicPlayer: React.FC = () => {
+interface Track {
+  title: string;
+  artist: string;
+  coverArt: string;
+  audioUrl: string;
+}
+
+interface MusicPlayerProps {
+  onTrackChange?: (track: Track | null) => void;
+}
+
+const MusicPlayer: React.FC<MusicPlayerProps> = ({ onTrackChange }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
-  const [track, setTrack] = useState({
-    title: 'Lunar Drift',
-    artist: 'Luna Waves',
-    coverArt: 'https://images.pexels.com/photos/1884306/pexels-photo-1884306.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-  });
+  const [track, setTrack] = useState<Track | null>(null);
   const [isMinimized, setIsMinimized] = useState(true);
   
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -77,6 +84,14 @@ const MusicPlayer: React.FC = () => {
     }
   }, [volume, isMuted]);
   
+  const playTrack = (newTrack: Track) => {
+    setTrack(newTrack);
+    setIsPlaying(true);
+    if (onTrackChange) {
+      onTrackChange(newTrack);
+    }
+  };
+
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
@@ -117,15 +132,21 @@ const MusicPlayer: React.FC = () => {
           <div className="flex items-center h-14">
             {/* Album art and info */}
             <div className="flex items-center mr-4">
-              <img 
-                src={track.coverArt} 
-                alt={track.title} 
-                className="w-10 h-10 object-cover rounded-md mr-3"
-              />
-              <div className={`overflow-hidden transition-all ${isMinimized ? 'w-20 md:w-auto' : ''}`}>
-                <div className="truncate text-sm font-medium">{track.title}</div>
-                <div className="truncate text-xs text-gray-400">{track.artist}</div>
-              </div>
+              {track ? (
+                <>
+                  <img 
+                    src={track.coverArt} 
+                    alt={track.title} 
+                    className="w-10 h-10 object-cover rounded-md mr-3"
+                  />
+                  <div className={`overflow-hidden transition-all ${isMinimized ? 'w-20 md:w-auto' : ''}`}>
+                    <div className="truncate text-sm font-medium">{track.title}</div>
+                    <div className="truncate text-xs text-gray-400">{track.artist}</div>
+                  </div>
+                </>
+              ) : (
+                <div className="text-gray-400 text-sm">No track selected</div>
+              )}            
             </div>
             
             {/* Controls */}
@@ -232,7 +253,7 @@ const MusicPlayer: React.FC = () => {
         {/* Audio element */}
         <audio
           ref={audioRef}
-          src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Replace with actual track URL
+          src={track?.audioUrl}
           preload="metadata"
         />
       </motion.div>

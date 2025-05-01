@@ -1,4 +1,4 @@
-import React from 'react';
+ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ExternalLink, Play } from 'lucide-react';
@@ -8,7 +8,15 @@ import Button from '../ui/Button';
 import { releases } from '../../data/releases';
 import { format } from 'date-fns';
 
+interface Track {
+  title: string;
+  artist: string;
+  coverArt: string;
+  audioUrl: string;
+}
+
 const LatestReleases: React.FC = () => {
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const featuredReleases = releases.filter(release => release.featured);
   
   const containerVariants = {
@@ -44,14 +52,22 @@ const LatestReleases: React.FC = () => {
       >
         {featuredReleases.map((release) => (
           <motion.div key={release.id} variants={itemVariants}>
-            <Card className="h-full flex flex-col">
-              <Link to={`/releases/${release.id}`}>
+            <Card className="h-full flex flex-col" onClick={() => {
+                const track = {
+                  title: release.title,
+                  artist: release.artist,
+                  coverArt: release.coverArt,
+                  audioUrl: release.audioUrl // Make sure this property exists in your release data
+                };
+                setCurrentTrack(track);
+              }}>
+              <div>
                 <CardMedia 
                   src={release.coverArt} 
                   alt={release.title} 
                   aspectRatio="square"
                 />
-              </Link>
+              </div>
               <CardContent className="flex-grow">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -73,13 +89,15 @@ const LatestReleases: React.FC = () => {
               </CardContent>
               <CardFooter className="bg-gray-50">
                 <div className="flex justify-between items-center">
-                  <Button 
-                    variant="secondary" 
-                    size="sm"
-                    icon={<Play size={16} />}
-                  >
-                    <Link to={`/releases/${release.id}`}>Listen</Link>
-                  </Button>
+                  <Link to={`/releases/${release.id}`}>
+                    <Button 
+                      variant="secondary" 
+                      size="sm"
+                      icon={<Play size={16} />}
+                    >
+                      Listen
+                    </Button>
+                  </Link>
                   
                   <div className="flex space-x-2">
                     {release.links.spotify && (
@@ -102,12 +120,14 @@ const LatestReleases: React.FC = () => {
       </motion.div>
       
       <div className="mt-12 text-center">
-        <Button 
-          variant="outline" 
-          size="lg"
-        >
-          <Link to="/releases">View All Releases</Link>
-        </Button>
+        <Link to="/releases">
+          <Button 
+            variant="outline" 
+            size="lg"
+          >
+            View All Releases
+          </Button>
+        </Link>
       </div>
     </Section>
   );
