@@ -53,7 +53,7 @@ const NewsDetailPage = () => {
               transition={{ duration: 0.5 }}
             >
               <div className="flex items-center space-x-4 text-white mb-4">
-                <span className="inline-block px-3 py-1 bg-[#4A148C] rounded-full text-sm font-medium uppercase">
+                <span className="inline-block px-3 py-1 bg-[#FFD700] text-black rounded-full text-sm font-medium uppercase">
                   {article.category}
                 </span>
                 <div className="flex items-center">
@@ -118,11 +118,11 @@ const NewsDetailPage = () => {
                         <span className="text-sm text-gray-500">
                           {format(new Date(item.date), 'MMMM d, yyyy')}
                         </span>
-                        <span className="inline-block px-2 py-0.5 bg-[#EEE6F5] text-[#4A148C] text-xs rounded-full">
+                        <span className="inline-block px-2 py-0.5 bg-[#FFF8DC] text-black text-xs rounded-full">
                           {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
                         </span>
                       </div>
-                      <h3 className="text-lg font-semibold text-[#4A148C] group-hover:text-[#3A1669] transition-colors">
+                      <h3 className="text-lg font-semibold text-black group-hover:text-[#FFD700] transition-colors">
                         {item.title}
                       </h3>
                       <p className="text-gray-600 mt-2 line-clamp-2">{item.excerpt}</p>

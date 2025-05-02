@@ -15,7 +15,7 @@ const EventsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <div className="p-6">
-              <div className="text-purple-600 dark:text-purple-400 font-bold mb-2">MAY 15, 2023</div>
+              <div className="text-[#FFD700] dark:text-[#FFD700] font-bold mb-2">MAY 15, 2023</div>
               <h3 className="text-xl font-bold mb-2">Summer Launch Party</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">Join us for our summer catalog launch with live performances from our artists.</p>
               <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
@@ -26,7 +26,7 @@ const EventsPage = () => {
           
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <div className="p-6">
-              <div className="text-purple-600 dark:text-purple-400 font-bold mb-2">JUNE 22, 2023</div>
+              <div className="text-[#FFD700] dark:text-[#FFD700] font-bold mb-2">JUNE 22, 2023</div>
               <h3 className="text-xl font-bold mb-2">Festival Appearance</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">Our artists will be performing at the annual Sound Waves Festival.</p>
               <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
@@ -37,7 +37,7 @@ const EventsPage = () => {
           
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <div className="p-6">
-              <div className="text-purple-600 dark:text-purple-400 font-bold mb-2">JULY 8, 2023</div>
+              <div className="text-[#FFD700] dark:text-[#FFD700] font-bold mb-2">JULY 8, 2023</div>
               <h3 className="text-xl font-bold mb-2">Album Release Concert</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">Special concert celebrating the release of our newest album.</p>
               <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
