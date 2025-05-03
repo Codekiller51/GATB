@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               <span className="text-xl font-bold">Guyz At The Back</span>
             </Link>
             <p className="text-gray-300 mb-4">
-              An independent music label dedicated to supporting innovative artists and pushing musical boundaries.
+            A dynamic trio of producers crafting genre-blending sounds that challenge conventions and elevate music to new heights.
             </p>
             <div className="flex space-x-4">
               <a href="https://www.instagram.com/gatb_records/" className="text-gray-300 hover:text-[#FFD700] transition-colors" aria-label="Instagram">
