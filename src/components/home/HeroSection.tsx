@@ -38,7 +38,7 @@ const HeroSection: React.FC = () => {
                 icon={<ArrowRight size={20} />}
                 iconPosition="right"
               >
-                <Link to="/artists">Our Artists</Link>
+                <Link to="/artists">Our Team</Link>
               </Button>
               <Button 
                 variant="outline" 

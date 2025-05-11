@@ -26,7 +26,7 @@ const EventsPreview: React.FC = () => {
   return (
     <Section
       title="Upcoming Events"
-      subtitle="Catch our artists performing live around the world"
+      subtitle="Catch our team performing live around the world"
     >
       <div className="space-y-6">
         {upcomingEvents.map((event, index) => (

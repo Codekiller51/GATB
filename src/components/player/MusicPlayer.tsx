@@ -1,26 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Loader } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePlayer } from '../../contexts/PlayerContext';
+import { testTracks } from '../../data/testTracks';
 
-interface Track {
-  title: string;
-  artist: string;
-  coverArt: string;
-  audioUrl: string;
-}
-
-interface MusicPlayerProps {
-  onTrackChange?: (track: Track | null) => void;
-}
-
-const MusicPlayer: React.FC<MusicPlayerProps> = ({ onTrackChange }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.8);
-  const [isMuted, setIsMuted] = useState(false);
-  const [track, setTrack] = useState<Track | null>(null);
+const MusicPlayer: React.FC = () => {
+  const { state, dispatch } = usePlayer();
   const [isMinimized, setIsMinimized] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Load test track on component mount
+  useEffect(() => {
+    if (testTracks.length > 0 && !state.currentTrack) {
+      dispatch({ type: 'SET_TRACK', payload: testTracks[0] });
+      dispatch({ type: 'SET_QUEUE', payload: testTracks });
+    }
+  }, []);
+  
+  const {
+    currentTrack: track,
+    isPlaying,
+    volume,
+    isMuted,
+    currentTime,
+    duration,
+    isLoading,
+    error
+  } = state;
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -28,84 +34,125 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ onTrackChange }) => {
   // Load and set up audio
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume;
+      audioRef.current.volume = isMuted ? 0 : volume;
       
       const handleLoadedMetadata = () => {
         if (audioRef.current) {
-          setDuration(audioRef.current.duration);
+          dispatch({ type: 'SET_DURATION', payload: audioRef.current.duration });
+          dispatch({ type: 'SET_LOADING', payload: false });
         }
       };
       
       const handleTimeUpdate = () => {
-        if (audioRef.current) {
-          setCurrentTime(audioRef.current.currentTime);
+        if (audioRef.current && !isDragging) {
+          dispatch({ type: 'SET_CURRENT_TIME', payload: audioRef.current.currentTime });
         }
       };
       
       const handleEnded = () => {
-        setIsPlaying(false);
-        setCurrentTime(0);
-        if (audioRef.current) {
-          audioRef.current.currentTime = 0;
-        }
+        dispatch({ type: 'PAUSE' });
+        dispatch({ type: 'SET_CURRENT_TIME', payload: 0 });
+        dispatch({ type: 'NEXT_TRACK' });
+      };
+      
+      const handleError = (e: ErrorEvent) => {
+        dispatch({ type: 'SET_ERROR', payload: 'Error loading audio file' });
+        dispatch({ type: 'SET_LOADING', payload: false });
       };
       
       audioRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
       audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
       audioRef.current.addEventListener('ended', handleEnded);
+      audioRef.current.addEventListener('error', handleError);
       
       return () => {
         if (audioRef.current) {
           audioRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
           audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
           audioRef.current.removeEventListener('ended', handleEnded);
+          audioRef.current.removeEventListener('error', handleError);
         }
       };
     }
-  }, []);
+  }, [volume, isMuted, isDragging, dispatch]);
   
-  // Handle play/pause
+  // Handle play/pause and track changes
   useEffect(() => {
     if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch(() => {
-          setIsPlaying(false);
-        });
-      } else {
-        audioRef.current.pause();
+      if (track) {
+        audioRef.current.src = track.audioUrl;
+        dispatch({ type: 'SET_LOADING', payload: true });
+        if (isPlaying) {
+          audioRef.current.play().catch((error) => {
+            dispatch({ type: 'SET_ERROR', payload: 'Failed to play audio' });
+            dispatch({ type: 'PAUSE' });
+          });
+        } else {
+          audioRef.current.pause();
+        }
       }
     }
-  }, [isPlaying]);
+  }, [track, isPlaying, dispatch]);
   
-  // Handle volume change
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
-    }
-  }, [volume, isMuted]);
-  
-  const playTrack = (newTrack: Track) => {
-    setTrack(newTrack);
-    setIsPlaying(true);
-    if (onTrackChange) {
-      onTrackChange(newTrack);
+  const handleProgressInteraction = (clientX: number) => {
+    if (progressRef.current && audioRef.current && duration > 0) {
+      const rect = progressRef.current.getBoundingClientRect();
+      const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const newTime = pos * duration;
+      audioRef.current.currentTime = newTime;
+      dispatch({ type: 'SET_CURRENT_TIME', payload: newTime });
     }
   };
 
+  const handleProgressMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    handleProgressInteraction(e.clientX);
+  };
+
+  const handleProgressMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      handleProgressInteraction(e.clientX);
+    }
+  };
+
+  const handleProgressMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleProgressTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    handleProgressInteraction(e.touches[0].clientX);
+  };
+
+  const handleProgressTouchMove = (e: React.TouchEvent) => {
+    if (isDragging) {
+      handleProgressInteraction(e.touches[0].clientX);
+    }
+  };
+
+  const handleProgressTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    dispatch({ type: isPlaying ? 'PAUSE' : 'PLAY' });
   };
   
   const toggleMute = () => {
-    setIsMuted(!isMuted);
+    dispatch({ type: 'TOGGLE_MUTE' });
   };
-  
-  const handleProgressClick = (e: React.MouseEvent) => {
-    if (progressRef.current && audioRef.current) {
-      const rect = progressRef.current.getBoundingClientRect();
-      const pos = (e.clientX - rect.left) / rect.width;
-      audioRef.current.currentTime = pos * duration;
-    }
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    dispatch({ type: 'SET_VOLUME', payload: newVolume });
+  };
+
+  const handlePreviousTrack = () => {
+    dispatch({ type: 'PREVIOUS_TRACK' });
+  };
+
+  const handleNextTrack = () => {
+    dispatch({ type: 'NEXT_TRACK' });
   };
   
   const formatTime = (time: number) => {
@@ -153,22 +200,33 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ onTrackChange }) => {
             <div className="flex items-center space-x-3 mx-auto">
               <button 
                 className="text-gray-400 hover:text-white transition-colors"
+                onClick={handlePreviousTrack}
                 aria-label="Previous track"
+                disabled={!track}
               >
                 <SkipBack size={20} />
               </button>
               
               <button 
-                className="bg-[#FFD700] hover:bg-[#E6C200] text-black rounded-full w-8 h-8 flex items-center justify-center transition-colors"
+                className="bg-[#FFD700] hover:bg-[#E6C200] text-black rounded-full w-8 h-8 flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={togglePlay}
                 aria-label={isPlaying ? 'Pause' : 'Play'}
+                disabled={!track || isLoading}
               >
-                {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-0.5" />}
+                {isLoading ? (
+                  <Loader size={18} className="animate-spin" />
+                ) : isPlaying ? (
+                  <Pause size={18} />
+                ) : (
+                  <Play size={18} className="ml-0.5" />
+                )}
               </button>
               
               <button 
                 className="text-gray-400 hover:text-white transition-colors"
+                onClick={handleNextTrack}
                 aria-label="Next track"
+                disabled={!track}
               >
                 <SkipForward size={20} />
               </button>
@@ -177,21 +235,36 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ onTrackChange }) => {
             {/* Progress bar (minimized state) */}
             {isMinimized && (
               <div 
-                className="flex-grow mx-4 hidden md:block"
+                className="flex-grow mx-4 hidden md:block relative"
                 ref={progressRef}
-                onClick={handleProgressClick}
+                onMouseDown={handleProgressMouseDown}
+                onMouseMove={handleProgressMouseMove}
+                onMouseUp={handleProgressMouseUp}
+                onMouseLeave={handleProgressMouseUp}
+                onTouchStart={handleProgressTouchStart}
+                onTouchMove={handleProgressTouchMove}
+                onTouchEnd={handleProgressTouchEnd}
               >
-                <div className="bg-gray-700 h-1 rounded-full overflow-hidden cursor-pointer">
+                <div className="bg-gray-700 h-2 rounded-full overflow-hidden cursor-pointer">
                   <div 
-                    className="bg-[#FFD700] h-full"
+                    className="bg-[#FFD700] h-full relative"
                     style={{ width: `${(currentTime / duration) * 100}%` }}
-                  ></div>
+                  >
+                    <div 
+                      className={`absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg transition-transform ${isDragging ? 'scale-150' : ''}`}
+                    />
+                  </div>
                 </div>
+                {error && (
+                  <div className="absolute top-full mt-1 text-red-500 text-xs">
+                    {error}
+                  </div>
+                )}
               </div>
             )}
             
             {/* Volume control */}
-            <div className="hidden md:flex items-center space-x-2 ml-auto">
+            <div className="hidden md:flex items-center space-x-2 ml-auto group relative">
               <button 
                 className="text-gray-400 hover:text-white transition-colors"
                 onClick={toggleMute}
@@ -199,6 +272,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ onTrackChange }) => {
               >
                 {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
               </button>
+              <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-90 rounded-lg p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  className="w-24 h-1 appearance-none bg-gray-700 rounded-full overflow-hidden cursor-pointer"
+                  style={{
+                    backgroundImage: `linear-gradient(to right, #FFD700 0%, #FFD700 ${volume * 100}%, #4B5563 ${volume * 100}%, #4B5563 100%)`
+                  }}
+                />
+              </div>
               
               <div className="w-20 h-1 bg-gray-700 rounded-full overflow-hidden cursor-pointer">
                 <input

@@ -17,7 +17,7 @@ const EventsPage = () => {
             <div className="p-6">
               <div className="text-[#FFD700] dark:text-[#FFD700] font-bold mb-2">MAY 15, 2023</div>
               <h3 className="text-xl font-bold mb-2">Summer Launch Party</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">Join us for our summer catalog launch with live performances from our artists.</p>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">Join us for our summer catalog launch with live performances from our team.</p>
               <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                 <span>The Echo Lounge, Los Angeles</span>
               </div>
@@ -28,7 +28,7 @@ const EventsPage = () => {
             <div className="p-6">
               <div className="text-[#FFD700] dark:text-[#FFD700] font-bold mb-2">JUNE 22, 2023</div>
               <h3 className="text-xl font-bold mb-2">Festival Appearance</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">Our artists will be performing at the annual Sound Waves Festival.</p>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">Our team will be performing at the annual Sound Waves Festival.</p>
               <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                 <span>Oceanside Park, Miami</span>
               </div>

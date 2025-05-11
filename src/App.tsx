@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
 
-// Pages
-import HomePage from './pages/HomePage';
-import ArtistsPage from './pages/ArtistsPage';
-import ArtistDetailPage from './pages/ArtistDetailPage';
-import ReleasesPage from './pages/ReleasesPage';
-import ReleaseDetailPage from './pages/ReleaseDetailPage';
-import EventsPage from './pages/EventsPage';
-import AboutPage from './pages/AboutPage';
-import NewsPage from './pages/NewsPage';
-import NewsDetailPage from './pages/NewsDetailPage';
-import NotFoundPage from './pages/NotFoundPage';
+// Lazy loaded pages
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ArtistsPage = lazy(() => import('./pages/ArtistsPage'));
+const ArtistDetailPage = lazy(() => import('./pages/ArtistDetailPage'));
+const ReleasesPage = lazy(() => import('./pages/ReleasesPage'));
+const ReleaseDetailPage = lazy(() => import('./pages/ReleaseDetailPage'));
+const EventsPage = lazy(() => import('./pages/EventsPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const NewsPage = lazy(() => import('./pages/NewsPage'));
+const NewsDetailPage = lazy(() => import('./pages/NewsDetailPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+// Loading component
+const LoadingSpinner = () => (
+  <div className="min-h-[400px] flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4A148C]"></div>
+  </div>
+);
 
 function App() {
   return (
@@ -23,16 +30,16 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="artists" element={<ArtistsPage />} />
-            <Route path="artists/:id" element={<ArtistDetailPage />} />
-            <Route path="releases" element={<ReleasesPage />} />
-            <Route path="releases/:id" element={<ReleaseDetailPage />} />
-            <Route path="events" element={<EventsPage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="news" element={<NewsPage />} />
-            <Route path="news/:id" element={<NewsDetailPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+            <Route index element={<Suspense fallback={<LoadingSpinner />}><HomePage /></Suspense>} />
+            <Route path="artists" element={<Suspense fallback={<LoadingSpinner />}><ArtistsPage /></Suspense>} />
+            <Route path="artists/:id" element={<Suspense fallback={<LoadingSpinner />}><ArtistDetailPage /></Suspense>} />
+            <Route path="releases" element={<Suspense fallback={<LoadingSpinner />}><ReleasesPage /></Suspense>} />
+            <Route path="releases/:id" element={<Suspense fallback={<LoadingSpinner />}><ReleaseDetailPage /></Suspense>} />
+            <Route path="events" element={<Suspense fallback={<LoadingSpinner />}><EventsPage /></Suspense>} />
+            <Route path="about" element={<Suspense fallback={<LoadingSpinner />}><AboutPage /></Suspense>} />
+            <Route path="news" element={<Suspense fallback={<LoadingSpinner />}><NewsPage /></Suspense>} />
+            <Route path="news/:id" element={<Suspense fallback={<LoadingSpinner />}><NewsDetailPage /></Suspense>} />
+            <Route path="*" element={<Suspense fallback={<LoadingSpinner />}><NotFoundPage /></Suspense>} />
           </Route>
         </Routes>
       </AnimatePresence>

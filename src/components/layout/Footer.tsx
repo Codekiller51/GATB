@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/artists" className="text-gray-300 hover:text-[#FFD700] transition-colors">Our Artists</Link>
+                <Link to="/artists" className="text-gray-300 hover:text-[#FFD700] transition-colors">Our Team</Link>
               </li>
               <li>
                 <Link to="/releases" className="text-gray-300 hover:text-[#FFD700] transition-colors">Releases</Link>

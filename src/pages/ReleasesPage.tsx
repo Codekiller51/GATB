@@ -1,20 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Play } from 'lucide-react';
 import { format } from 'date-fns';
 import Section from '../components/ui/Section';
 import Card, { CardMedia, CardContent, CardTitle, CardFooter } from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { releases } from '../data/releases';
+import { usePlayer } from '../contexts/PlayerContext';
 
 type ReleaseType = 'album' | 'single' | 'ep';
 
 const ReleasesPage: React.FC = () => {
+  const { dispatch } = usePlayer();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState<ReleaseType | 'all'>('all');
   const [filteredReleases, setFilteredReleases] = useState(releases);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const handlePlayTrack = (release: any, track: any) => {
+    if (track.previewUrl) {
+      dispatch({
+        type: 'SET_TRACK',
+        payload: {
+          id: track.id,
+          title: track.title,
+          artist: release.artist,
+          coverArt: release.coverArt,
+          audioUrl: track.previewUrl
+        }
+      });
+    }
+  };
   
   useEffect(() => {
     document.title = 'Releases - Guyz At The Back';
@@ -209,15 +226,30 @@ const ReleasesPage: React.FC = () => {
                     </CardContent>
                     <CardFooter className="bg-gray-50">
                       <div className="w-full flex justify-between items-center">
-                        <span className="text-sm text-gray-500">
-                          {release.tracks.some(t => t.previewUrl) ? 'Preview Available' : 'No Preview Available'}
-                        </span>
-                        <Button 
-                          variant="text" 
-                          size="sm"
-                        >
-                          View Details
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          {release.tracks.map((track, trackIndex) => (
+                            track.previewUrl && (
+                              <Button
+                                key={track.id}
+                                variant="text"
+                                size="sm"
+                                icon={<Play size={16} />}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handlePlayTrack(release, track);
+                                }}
+                              >
+                                Play {trackIndex + 1}
+                              </Button>
+                            )
+                          ))}
+                          <Button 
+                            variant="text" 
+                            size="sm"
+                          >
+                            View Details
+                          </Button>
+                        </div>
                       </div>
                     </CardFooter>
                   </Card>

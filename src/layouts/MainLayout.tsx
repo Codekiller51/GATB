@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import MusicPlayer from '../components/player/MusicPlayer';
 import { motion } from 'framer-motion';
+import { PlayerProvider } from '../contexts/PlayerContext';
+import ErrorBoundary from '../components/error/ErrorBoundary';
+
+const MemoizedHeader = memo(Header);
+const MemoizedFooter = memo(Footer);
+const MemoizedMusicPlayer = memo(MusicPlayer);
 
 const MainLayout: React.FC = () => {
   const location = useLocation();
@@ -48,22 +54,28 @@ const MainLayout: React.FC = () => {
   };
   
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header isTransparent={isHeaderTransparent} />
-      <main className="flex-grow">
-        <motion.div
-          key={location.pathname}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={pageVariants}
-        >
-          <Outlet />
-        </motion.div>
-      </main>
-      <MusicPlayer />
-      <Footer />
-    </div>
+    <ErrorBoundary>
+      <PlayerProvider>
+        <div className="flex flex-col min-h-screen">
+          <MemoizedHeader isTransparent={isHeaderTransparent} />
+          <main className="flex-grow">
+            <ErrorBoundary>
+              <motion.div
+                key={location.pathname}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageVariants}
+              >
+                <Outlet />
+              </motion.div>
+            </ErrorBoundary>
+          </main>
+          <MemoizedMusicPlayer />
+          <MemoizedFooter />
+        </div>
+      </PlayerProvider>
+    </ErrorBoundary>
   );
 };
 
