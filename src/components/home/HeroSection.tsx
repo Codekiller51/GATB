@@ -29,7 +29,7 @@ const HeroSection: React.FC = () => {
               Discover the Sound of Tomorrow
             </h1>
             <p className="text-xl text-gray-200 mb-8 max-w-xl">
-              Guyz At The Back is an independent music label championing innovative artists and pushing the boundaries of sound.
+            A dynamic trio of producers crafting genre-blending sounds that challenge conventions and elevate music to new heights.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button 
@@ -61,18 +61,18 @@ const HeroSection: React.FC = () => {
             <div className="bg-black/30 backdrop-blur-md p-6 rounded-lg">
               <div className="flex items-center space-x-4">
                 <img 
-                  src="https://images.pexels.com/photos/1884306/pexels-photo-1884306.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-                  alt="Featured album" 
+                  src="/assets/audio/2025/1-NewDay/cover.jpg" 
+                  alt="New Day - Latest Release" 
                   className="w-40 h-40 object-cover rounded-md shadow-lg"
                 />
                 <div>
                   <div className="text-[#FFD700] font-medium mb-1">New Release</div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Midnight Echoes</h3>
-                  <p className="text-gray-300 mb-4">Luna Waves</p>
+                  <h3 className="text-2xl font-bold text-white mb-2">New Day</h3>
+                  <p className="text-gray-300 mb-4">Guyz At The Back</p>
                   <Button 
                     variant="primary" 
                     size="sm"
-                    className="bg-[#00B8A9] hover:bg-[#00A598]"
+                    className="bg-[#FFD700] hover:bg-[#E6C200] text-black"
                   >
                     <Link to="/releases/release-1">Listen Now</Link>
                   </Button>

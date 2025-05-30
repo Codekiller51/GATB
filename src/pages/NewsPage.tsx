@@ -7,13 +7,25 @@ import { Calendar, Clock } from 'lucide-react';
 
 const NewsPage = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Section title="Latest News" subtitle="Stay updated with the latest from our label">
+    <div>
+      {/* Hero Header */}
+      <Section className="pt-32 pb-20 bg-gradient-to-r from-[#FFD700] to-[#B8860B] text-black">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Latest News</h1>
+          <p className="text-xl text-gray-200 max-w-2xl mx-auto">
+            Stay updated with the latest stories and announcements from our label.
+          </p>
+        </div>
+      </Section>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 py-12"
+      >
+        <Section title="Latest News" subtitle="Stay updated with the latest from our label">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {news.map((item) => (
             <div key={item.id} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform hover:scale-[1.02]">
@@ -42,7 +54,8 @@ const NewsPage = () => {
           ))}
         </div>
       </Section>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

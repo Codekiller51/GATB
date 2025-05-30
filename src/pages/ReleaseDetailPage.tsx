@@ -44,7 +44,7 @@ const ReleaseDetailPage: React.FC = () => {
     }
   };
   
-  const hasStreamingLinks = release.links.spotify || release.links.appleMusic || release.links.soundcloud;
+  const hasStreamingLinks = release.links.spotify || release.links.appleMusic || release.links.soundcloud || release.links.youtube;
   
   return (
     <div>
@@ -56,7 +56,7 @@ const ReleaseDetailPage: React.FC = () => {
             alt={release.title} 
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#4A148C]/80 to-black/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FFD700]/80 to-black/90"></div>
         </div>
         
         <div className="container mx-auto px-4 relative z-10 text-white mt-12">
@@ -154,6 +154,23 @@ const ReleaseDetailPage: React.FC = () => {
                       </a>
                     </Button>
                   )}
+
+                  {release.links.youtube && (
+                    <Button 
+                      variant="outline" 
+                      className="bg-transparent border-white text-white hover:bg-white/20 hover:text-white"
+                    >
+                      <a 
+                        href={release.links.youtube} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        <span>YouTube</span>
+                        <ExternalLink size={16} className="ml-2" />
+                      </a>
+                    </Button>
+                  )}
                 </div>
               )}
             </motion.div>
@@ -163,7 +180,7 @@ const ReleaseDetailPage: React.FC = () => {
       
       {/* Tracklist */}
       <Section>
-        <h2 className="text-2xl font-bold mb-6 text-[#4A148C]">Tracklist</h2>
+        <h2 className="text-2xl font-bold mb-6 text-[#FFD700]">Tracklist</h2>
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -199,7 +216,7 @@ const ReleaseDetailPage: React.FC = () => {
                           className={`p-2 rounded-full ${
                             playingTrackId === track.id
                               ? 'bg-[#00B8A9] text-white'
-                              : 'bg-gray-100 text-[#4A148C] hover:bg-gray-200'
+                              : 'bg-gray-100 text-black hover:bg-gray-200'
                           }`}
                           aria-label={playingTrackId === track.id ? 'Pause' : 'Play preview'}
                         >
@@ -223,7 +240,7 @@ const ReleaseDetailPage: React.FC = () => {
       
       {/* About the Artist */}
       <Section className="bg-gray-50">
-        <h2 className="text-2xl font-bold mb-6 text-[#4A148C]">About the Artist</h2>
+        <h2 className="text-2xl font-bold mb-6 text-[#FFD700]">About the Artist</h2>
         <div className="flex flex-col md:flex-row gap-8 items-center">
           <div className="w-48 h-48 rounded-full overflow-hidden flex-shrink-0 shadow-md">
             <img 
@@ -233,14 +250,14 @@ const ReleaseDetailPage: React.FC = () => {
             />
           </div>
           <div>
-            <Link to={`/artists/${artist.id}`} className="text-2xl font-bold text-[#4A148C] hover:text-[#3A1669] transition-colors">
+            <Link to={`/artists/${artist.id}`} className="text-2xl font-bold text-[#FFD700] hover:text-[#E6C200] transition-colors">
               {artist.name}
             </Link>
             <div className="flex flex-wrap gap-1 my-3">
               {artist.genres.map((genre, idx) => (
                 <span 
                   key={idx}
-                  className="inline-block bg-[#EEE6F5] text-[#4A148C] rounded-full px-3 py-1 text-sm"
+                  className="inline-block bg-black/10 text-black rounded-full px-3 py-1 text-sm"
                 >
                   {genre}
                 </span>
@@ -257,7 +274,7 @@ const ReleaseDetailPage: React.FC = () => {
       {/* More from this Artist */}
       {releases.filter(r => r.artistId === artist.id && r.id !== release.id).length > 0 && (
         <Section>
-          <h2 className="text-2xl font-bold mb-6 text-[#4A148C]">More from {artist.name}</h2>
+          <h2 className="text-2xl font-bold mb-6 text-[#FFD700]">More from {artist.name}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {releases
               .filter(r => r.artistId === artist.id && r.id !== release.id)
@@ -277,7 +294,7 @@ const ReleaseDetailPage: React.FC = () => {
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
-                    <h3 className="font-medium text-[#4A148C] group-hover:text-[#3A1669] transition-colors truncate">
+                    <h3 className="font-medium text-[#FFD700] group-hover:text-[#E6C200] transition-colors truncate">
                       {otherRelease.title}
                     </h3>
                     <p className="text-sm text-gray-500">

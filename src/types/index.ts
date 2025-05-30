@@ -28,6 +28,7 @@ export interface Release {
     spotify?: string;
     appleMusic?: string;
     soundcloud?: string;
+    youtube?: string;
   };
   featured: boolean;
 }
@@ -59,7 +60,7 @@ export interface NewsItem {
   excerpt: string;
   content: string;
   image: string;
-  category: 'release' | 'artist' | 'event' | 'label';
+  category: 'release' | 'artist' | 'event' | 'GATB'  | 'announcement';
 }
 
 export interface TeamMember {

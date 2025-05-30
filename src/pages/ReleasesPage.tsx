@@ -70,7 +70,7 @@ const ReleasesPage: React.FC = () => {
   return (
     <div>
       {/* Hero Header */}
-      <Section className="pt-32 pb-20 bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] text-white">
+      <Section className="pt-32 pb-20 bg-gradient-to-r from-[#FFD700] to-[#B8860B] text-black">
         <div className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Releases</h1>
           <p className="text-xl text-gray-200 max-w-2xl mx-auto">

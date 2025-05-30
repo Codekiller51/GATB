@@ -17,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({ isTransparent }) => {
   
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'Artists', path: '/artists' },
     { label: 'Releases', path: '/releases' },
     { label: 'Events', path: '/events' },
     { label: 'News', path: '/news' },

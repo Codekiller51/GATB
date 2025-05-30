@@ -5,14 +5,24 @@ import { Users, Award, Clock, Music } from 'lucide-react';
 
 const AboutPage = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-12"
-    >
-      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center">About Us</h1>
+    <div>
+      {/* Hero Header */}
+      <Section className="pt-32 pb-20 bg-gradient-to-r from-[#FFD700] to-[#B8860B] text-black">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">About Us</h1>
+          <p className="text-xl text-gray-200 max-w-2xl mx-auto">
+            Meet the team behind the beats and discover our story.
+          </p>
+        </div>
+      </Section>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 py-12"
+      >
       
       <Section title="Our Story">
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -89,19 +99,19 @@ const AboutPage = () => {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Artist collective members */}
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="w-32 h-32 rounded-full bg-gray-200 mx-auto mb-4"></div>
+            <div className="w-32 h-32 rounded-full bg-gray-200 mx-auto mb-4 overflow-hidden"><img src="/assets/Team/David.jpg" alt="David Miswa" className="w-full h-full object-cover" /></div>
             <h3 className="text-xl font-bold">David Miswa</h3>
             <p className="text-[#FFD700] mb-2">David Rollit</p>
             <p className="text-gray-600">Sound engineer & sonic perfectionist. Specializes in mixing and mastering.</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="w-32 h-32 rounded-full bg-gray-200 mx-auto mb-4"></div>
+            <div className="w-32 h-32 rounded-full bg-gray-200 mx-auto mb-4 overflow-hidden"><img src="/assets/Team/ander.jpg" alt="Anderson Michael" className="w-full h-full object-cover" /></div>
             <h3 className="text-xl font-bold">Anderson Michael</h3>
             <p className="text-[#FFD700] mb-2">Code_Killer</p>
             <p className="text-gray-600">Producer & beat architect. Fuses technology with rhythm for signature soundscapes.</p>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="w-32 h-32 rounded-full bg-gray-200 mx-auto mb-4"></div>
+            <div className="w-32 h-32 rounded-full bg-gray-200 mx-auto mb-4 overflow-hidden"><img src="/assets/Team/champ.jpeg" alt="Champion Sadick" className="w-full h-full object-cover" /></div>
             <h3 className="text-xl font-bold">Champion Sadick</h3>
             <p className="text-[#FFD700] mb-2">Champion247</p>
             <p className="text-gray-600">Creative producer & culture strategist. Drives Afro-fusion and digital presence.</p>
@@ -113,14 +123,15 @@ const AboutPage = () => {
       <Section title="Join Our Journey">
         <div className="text-center max-w-3xl mx-auto">
           <p className="text-lg mb-6">
-          Whether you're an artist looking to collaborate, a fan of our beats, or a creative partner with a vision, let’s connect and create something unforgettable
+          Whether you're an artist looking to collaborate, a fan of our beats, or a creative partner with a vision, let's connect and create something unforgettable
           </p>
           <button className="bg-[#FFD700] hover:bg-[#B8860B] text-black font-bold py-3 px-6 rounded-lg transition-colors">
             Contact Us
           </button>
         </div>
       </Section>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 

@@ -41,7 +41,7 @@ const LatestReleases: React.FC = () => {
   return (
     <Section
       title="Latest Releases"
-      subtitle="Fresh music from our roster of talented artists"
+      subtitle="Fresh music from us"
     >
       <motion.div 
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"

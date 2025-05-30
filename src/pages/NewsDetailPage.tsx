@@ -34,37 +34,37 @@ const NewsDetailPage = () => {
   }
 
   return (
-    <div className="pt-24">
+    <div>
       {/* Article Hero */}
-      <div className="relative h-[400px] mb-8">
+      <div className="relative h-[500px] mb-12">
         <div className="absolute inset-0">
           <img 
             src={article.image} 
             alt={article.title} 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover brightness-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40"></div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 p-8">
+        <div className="absolute bottom-0 left-0 right-0 p-12">
           <div className="container mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="flex items-center space-x-4 text-white mb-4">
-                <span className="inline-block px-3 py-1 bg-[#FFD700] text-black rounded-full text-sm font-medium uppercase">
+              <div className="flex items-center space-x-4 text-white mb-6">
+                <span className="inline-block px-4 py-1.5 bg-[#FFD700] text-black rounded-full text-sm font-semibold uppercase tracking-wide shadow-md">
                   {article.category}
                 </span>
-                <div className="flex items-center">
-                  <Calendar size={16} className="mr-2" />
+                <div className="flex items-center bg-black/30 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                  <Calendar size={16} className="mr-2 text-[#FFD700]" />
                   {format(new Date(article.date), 'MMMM d, yyyy')}
                 </div>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 {article.title}
               </h1>
-              <p className="text-xl text-gray-200 max-w-3xl">
+              <p className="text-xl text-gray-100 max-w-3xl leading-relaxed">
                 {article.excerpt}
               </p>
             </motion.div>

@@ -8,7 +8,7 @@ import NewsletterSignup from '../components/home/NewsletterSignup';
 
 const HomePage: React.FC = () => {
   useEffect(() => {
-    document.title = 'Guyz At The Back - Independent Music Label';
+    document.title = 'Guyz At The Back - GATB_Records';
   }, []);
   
   return (

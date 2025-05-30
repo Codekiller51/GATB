@@ -45,8 +45,8 @@ const ArtistsCarousel: React.FC = () => {
   
   return (
     <Section
-      title="Featured Artists"
-      subtitle="Discover the incredible talent behind our label"
+      title="Our Team"
+      subtitle="Discover the incredible talent behind the scenes"
       className="bg-gray-50"
     >
       <div className="relative">

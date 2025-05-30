@@ -8,7 +8,7 @@ import { artists } from '../data/artists';
 
 const ArtistsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredArtists, setFilteredArtists] = useState(artists);
+  const [filteredArtists, setFilteredArtists] = useState(artists.filter(artist => artist.featured));
   
   useEffect(() => {
     document.title = 'Artists - Guyz At The Back';
@@ -16,15 +16,16 @@ const ArtistsPage: React.FC = () => {
   
   useEffect(() => {
     if (searchQuery.trim() === '') {
-      setFilteredArtists(artists);
+      setFilteredArtists(artists.filter(artist => artist.featured));
     } else {
       const query = searchQuery.toLowerCase();
       setFilteredArtists(
-        artists.filter(
-          (artist) =>
+        artists.filter(artist => 
+          artist.featured && (
             artist.name.toLowerCase().includes(query) ||
             artist.bio.toLowerCase().includes(query) ||
             artist.genres.some((genre) => genre.toLowerCase().includes(query))
+          )
         )
       );
     }
@@ -52,7 +53,7 @@ const ArtistsPage: React.FC = () => {
   return (
     <div>
       {/* Hero Header */}
-      <Section className="pt-32 pb-20 bg-gradient-to-r from-[#4A148C] to-[#6A1B9A] text-white">
+      <Section className="pt-32 pb-20 bg-gradient-to-r from-[#FFD700] to-[#B8860B] text-black">
         <div className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Team</h1>
           <p className="text-xl text-gray-200 max-w-2xl mx-auto">
